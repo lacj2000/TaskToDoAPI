@@ -1,4 +1,6 @@
-django===3.1
-djangorestframework
-markdown     
-django-filter
+
+markdown==3.3.3  
+Django==3.1
+django-filter==2.4.0
+djangorestframework==3.12.2
+drf-yasg==1.20.0
