@@ -18,10 +18,10 @@ urlpatterns = [
    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
 
-
    path('api/users/', UserList.as_view(), name=UserList.name),
    path('api/users/<int:pk>/', UserDetail.as_view(), name=UserDetail.name),
 
+   
 
 
 ]

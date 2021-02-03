@@ -7,11 +7,11 @@ python - version 3.8
 pipenv - version 2020.11.15
 
 ##### Commands
-run 'pip shell' on /TaskToDo
-run 'pip install -r requirements.txt'
-run 'cd todo/'
-run 'python manage.py makemigrations'
-run 'python manage.py migrate'
-run 'python manage.py runserver'
+run 'pip shell' on /TaskToDoAPI <br/>
+run 'pip install -r requirements.txt' <br/>
+run 'cd tasktodo/' <br/>
+run 'python manage.py makemigrations' <br/>
+run 'python manage.py migrate' <br/>
+run 'python manage.py runserver' <br/>
 
 
