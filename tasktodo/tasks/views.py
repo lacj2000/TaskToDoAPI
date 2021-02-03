@@ -131,6 +131,94 @@ class SublistDetail(APIView):
         raise AccessFunctionException
 
 
+class ItemList(APIView):
+    name='items-list'
+    permission_classes = [IsAuthenticated] 
+
+    def get_object(self, pk):
+        try:
+            return Sublist.objects.get(pk=pk)
+        except Sublist.DoesNotExist:
+            raise Http404
+
+    def get_context(self, request):
+        return {'request':request}
+
+
+    def post(self, request, pk, format=None):
+        item = self.get_object(pk)
+        items = SublistSerializer(item, context=self.get_context(request))        
+        if item.check_user(request.user):
+            serializer = ItemSerializer(data={**request.data, "sublist":items.data.get('url', None)}, context=self.get_context(request))
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status= status.HTTP_400_BAD_REQUEST)    
+        raise AccessFunctionException
+
+class ItemDetail(APIView):
+    name='item-detail'
+    permission_classes = [IsAuthenticated] 
+
+    def get_object(self, pk):
+        try:
+            return Item.objects.get(pk=pk)
+        except Item.DoesNotExist:
+            raise Http404
+
+    def get_context(self, request):
+        return {'request':request}
+
+
+    def get(self, request, pk, format=None):
+        item = self.get_object(pk)
+        if item.check_user(request.user):
+            serializer = ItemSerializer(item, context=self.get_context(request))
+            return Response(serializer.data)
+        raise AccessFunctionException
+    
+    def delete(self, request, pk, format=None):
+        item = self.get_object(pk)         
+        if item.check_user(request.user):
+            item.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        raise AccessFunctionException
+
+class ItemCheck(APIView):
+    name='item-check'
+    permission_classes  =[IsAuthenticated]
+
+    def get_context(self,request):
+        return {'request':request}
+
+
+    def get_object(self, pk):
+        try:
+            return Item.objects.get(pk=pk)
+        except Item.DoesNotExist:
+            raise Http404
+    
+
+    def get(self, request, pk, format=None):
+        item = self.get_object(pk)
+        if item.check_user(request.user):
+            item.get_check()
+            serializer = ItemSerializer(item, context=self.get_context(request))
+            return Response(serializer.data,status.HTTP_200_OK)
+        raise AccessItemException
+
+class ItemUncheck(ItemCheck):
+    name = 'item-uncheck'
+    def get(self, request, pk, format=None):
+        item = self.get_object(pk)
+        if item.check_user(request.user):
+            item.get_uncheck()
+            serializer = ItemSerializer(item, context=self.get_context(request))
+            return Response(serializer.data,status.HTTP_200_OK)
+        raise AccessItemException
+
+
+
 
 
 
@@ -139,6 +227,4 @@ def api_root(request, format=None):
     return Response({
         'tasks': reverse('tasks-list', request=request, format=format),
         'users': reverse('users-list', request=request, format=format),
-        # 'sublists': reverse('', request=request, format=format),
-        # 'itens': reverse('', request=request, format=format),
     })

@@ -6,21 +6,22 @@ from users.serializers import *
 class ItemSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Item
-        fields = ('url', 'text','check')
+        fields = ('url', 'text','check','sublist')
 
 class SimpleSublistSerializer(serializers.HyperlinkedModelSerializer):
+    items = ItemSerializer(many=True, read_only=True)
     class Meta:
         model = Sublist
-        fields = ('url','title', 'task')
+        fields = ('url','title', 'task', 'items')
 
 
 
 class SublistSerializer(serializers.HyperlinkedModelSerializer):
-    items_list = ItemSerializer(many=True, read_only=True)
+    items = ItemSerializer(many=True, read_only=True)
     #items_list = serializers.HyperlinkedIdentityField(view_name='items', read_only=True )
     class Meta:
         model = Sublist
-        fields = ('url', 'title', 'items_list')
+        fields = ('url', 'title', 'items')
 
 
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
