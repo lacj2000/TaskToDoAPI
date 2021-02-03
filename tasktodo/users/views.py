@@ -16,13 +16,13 @@ from django.http import Http404
 
 class UserList(generics.ListAPIView):
     name = 'users-list'
-    permission_classes = (IsAdminUser)
+    permission_classes = [IsAdminUser]
     serializer_class = UserSerializer
     queryset = User.objects.all()
 
 
 class UserDetail(generics.RetrieveAPIView):
     name = 'user-detail'
-    permission_classes = (IsAuthenticated)
+    permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
     queryset = User.objects.all()
