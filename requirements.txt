@@ -4,3 +4,7 @@ django-filter==2.4.0
 djangorestframework==3.12.2
 drf-yasg==1.20.0
 djangorestframework-simplejwt==4.4.0
+gunicorn
+django-heroku
+whitenoise
+psycopg2
